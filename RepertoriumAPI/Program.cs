@@ -1,5 +1,8 @@
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using RepertoriumAPI.Configure;
 using RepertoriumAPI.Entities;
+using RepertoriumAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +14,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<RepertoriumDbContext>(optionsAction =>
     optionsAction.UseSqlServer(builder.Configuration.GetConnectionString("DataBaseConnection")));
+builder.Services.AddScoped<IAdvertisementService, AdvertisementService>();
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddScoped<Seeder>();
 
 var app = builder.Build();
+var scope = app.Services.CreateScope();
+var seeder = scope.ServiceProvider.GetRequiredService<Seeder>();
+seeder.Seed();
 
 // Configure the HTTP request pipeline.
 

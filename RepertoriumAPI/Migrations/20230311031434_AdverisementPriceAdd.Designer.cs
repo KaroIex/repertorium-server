@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RepertoriumAPI.Entities;
 
@@ -10,9 +11,11 @@ using RepertoriumAPI.Entities;
 namespace RepertoriumAPI.Migrations
 {
     [DbContext(typeof(RepertoriumDbContext))]
-    partial class RepertoriumDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230311031434_AdverisementPriceAdd")]
+    partial class AdverisementPriceAdd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

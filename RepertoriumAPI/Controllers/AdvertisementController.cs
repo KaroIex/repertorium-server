@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using RepertoriumAPI.Entities;
+using RepertoriumAPI.Models;
+using RepertoriumAPI.Services;
 
 namespace RepertoriumAPI.Controllers;
 
@@ -7,9 +8,26 @@ namespace RepertoriumAPI.Controllers;
 [Route("api/advertisement")]
 public class AdvertisementController : ControllerBase
 {
-    [HttpGet]
-    public ActionResult<IEnumerable<Advertisement>> GetAll()
+    private readonly IAdvertisementService _advertisementService;
+
+    public AdvertisementController(IAdvertisementService advertisementService)
     {
-        return Ok();
+        _advertisementService = advertisementService;
+    }
+
+    [HttpGet]
+    public ActionResult<IEnumerable<AdvertisementDto>> GetAll()
+    {
+        var advertisements = _advertisementService.GetAll();
+
+        return Ok(advertisements);
+    }
+
+    [HttpPut]
+    public ActionResult Create([FromBody] CreateAdvertisementDto dto)
+    {
+        var advertisements = _advertisementService.GetAll();
+
+        return Ok(advertisements);
     }
 }
