@@ -11,8 +11,8 @@ using RepertoriumAPI.Entities;
 namespace RepertoriumAPI.Migrations
 {
     [DbContext(typeof(RepertoriumDbContext))]
-    [Migration("20230311031434_AdverisementPriceAdd")]
-    partial class AdverisementPriceAdd
+    [Migration("20230311054942_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
