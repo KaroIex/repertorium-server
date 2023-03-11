@@ -21,12 +21,11 @@ builder.Services.AddScoped<Seeder>();
 var app = builder.Build();
 
 
-if (!app.Environment.IsDevelopment())
-{
-    var scope = app.Services.CreateScope();
-    var seeder = scope.ServiceProvider.GetRequiredService<Seeder>();
-    seeder.Seed();
-}
+
+var scope = app.Services.CreateScope();
+var seeder = scope.ServiceProvider.GetRequiredService<Seeder>();
+seeder.Seed();
+
 
 
 
