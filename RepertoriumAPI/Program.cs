@@ -17,16 +17,14 @@ builder.Services.AddDbContext<RepertoriumDbContext>(optionsAction =>
 builder.Services.AddScoped<IAdvertisementService, AdvertisementService>();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddScoped<Seeder>();
+builder.Services.AddScoped<IImageService, ImageService>();
 
 var app = builder.Build();
-
 
 
 var scope = app.Services.CreateScope();
 var seeder = scope.ServiceProvider.GetRequiredService<Seeder>();
 seeder.Seed();
-
-
 
 
 // Configure the HTTP request pipeline.
