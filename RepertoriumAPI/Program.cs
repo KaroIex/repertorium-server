@@ -19,9 +19,16 @@ builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddScoped<Seeder>();
 
 var app = builder.Build();
-var scope = app.Services.CreateScope();
-var seeder = scope.ServiceProvider.GetRequiredService<Seeder>();
-seeder.Seed();
+
+
+if (!app.Environment.IsDevelopment())
+{
+    var scope = app.Services.CreateScope();
+    var seeder = scope.ServiceProvider.GetRequiredService<Seeder>();
+    seeder.Seed();
+}
+
+
 
 // Configure the HTTP request pipeline.
 
