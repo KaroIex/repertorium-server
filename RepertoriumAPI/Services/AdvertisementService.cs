@@ -7,7 +7,9 @@ namespace RepertoriumAPI.Services;
 
 public interface IAdvertisementService
 {
-    List<AdvertisementDto> GetAll();
+    AdvertisementDto GetAdvertisementById(int id);
+    PagedResult<AdvertisementPagedDto> GetPagedList(AdvertisementQuery query);
+    int Create(CreateAdvertisementDto dto);
 }
 
 public class AdvertisementService : IAdvertisementService
@@ -21,14 +23,52 @@ public class AdvertisementService : IAdvertisementService
         _mapper = mapper;
     }
 
-    public List<AdvertisementDto> GetAll()
+    public AdvertisementDto GetAdvertisementById(int id)
     {
-        var advertisements = _dbContext
+        var advertisement = _dbContext
             .Advertisements
             .Include(a => a.Category)
             .Include(a => a.Images)
+            .FirstOrDefault(a => a.Id == id);
+
+        var advertisementDto = _mapper.Map<AdvertisementDto>(advertisement);
+        return advertisementDto;
+    }
+
+    public PagedResult<AdvertisementPagedDto> GetPagedList(AdvertisementQuery query)
+    {
+        var baseQery = _dbContext
+            .Advertisements
+            .Include(r => r.Category)
+            .Where(r => query.SearchPhrase == null || r.Title.ToLower().Contains(query.SearchPhrase.ToLower()) ||
+                        r.Description.ToLower().Contains(query.SearchPhrase.ToLower()));
+
+
+        var advertisements = baseQery
+            .Skip(query.PageSize * (query.PageNumber - 1))
+            .Take(query.PageSize)
             .ToList();
-        var a = _mapper.Map<List<AdvertisementDto>>(advertisements);
-        return a;
+
+        var totalItemsCount = baseQery.Count();
+
+        var advertisementsPagedDto = _mapper.Map<List<AdvertisementPagedDto>>(advertisements);
+
+        var pagedResult = new PagedResult<AdvertisementPagedDto>(advertisementsPagedDto, totalItemsCount,
+            query.PageSize,
+            query.PageNumber);
+
+        return pagedResult;
+    }
+
+
+    public int Create(CreateAdvertisementDto dto)
+    {
+        var advertisement = _mapper.Map<Advertisement>(dto);
+        advertisement.Category = _dbContext
+            .Categories
+            .FirstOrDefault(c => c.Name == dto.Category);
+        _dbContext.Add(advertisement);
+        _dbContext.SaveChanges();
+        return advertisement.Id;
     }
 }

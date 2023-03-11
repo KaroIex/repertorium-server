@@ -4,7 +4,9 @@ namespace RepertoriumAPI.Entities;
 
 public class RepertoriumDbContext : DbContext
 {
-    public RepertoriumDbContext(DbContextOptions<RepertoriumDbContext> options) : base(options) { }
+    public RepertoriumDbContext(DbContextOptions<RepertoriumDbContext> options) : base(options)
+    {
+    }
 
     public DbSet<Advertisement> Advertisements { get; set; }
     public DbSet<Category> Categories { get; set; }

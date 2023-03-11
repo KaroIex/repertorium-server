@@ -15,19 +15,26 @@ public class AdvertisementController : ControllerBase
         _advertisementService = advertisementService;
     }
 
-    [HttpGet]
-    public ActionResult<IEnumerable<AdvertisementDto>> GetAll()
+    [HttpGet("{advertisementId}")]
+    public ActionResult<IEnumerable<AdvertisementDto>> GetAdvertisementById([FromRoute] int advertisementId)
     {
-        var advertisements = _advertisementService.GetAll();
+        var advertisements = _advertisementService.GetAdvertisementById(advertisementId);
+
+        return Ok(advertisements);
+    }
+
+    [HttpGet]
+    public ActionResult<IEnumerable<AdvertisementDto>> GetPagedList([FromQuery] AdvertisementQuery query)
+    {
+        var advertisements = _advertisementService.GetPagedList(query);
 
         return Ok(advertisements);
     }
 
     [HttpPut]
-    public ActionResult Create([FromBody] CreateAdvertisementDto dto)
+    public ActionResult CreateAdvertisement([FromBody] CreateAdvertisementDto dto)
     {
-        var advertisements = _advertisementService.GetAll();
-
-        return Ok(advertisements);
+        var id = _advertisementService.Create(dto);
+        return Created($"/api/restaurants/{id}", null);
     }
 }

@@ -18,7 +18,7 @@ public class Seeder
         {
             var pendingMigrations = _dbContext.Database.GetPendingMigrations();
 
-            if (pendingMigrations != null && pendingMigrations.Any()){ _dbContext.Database.Migrate();}
+            if (pendingMigrations != null && pendingMigrations.Any()) _dbContext.Database.Migrate();
 
             if (!_dbContext.Categories.Any())
             {
